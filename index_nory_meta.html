@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Nory Dentistry · Meta Ads Performance · AEVA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    /* AEVA tokens (extracted from design system) */
+    --teal-100:#EAF6F7; --teal-200:#CBE9ED; --teal-300:#A6D8E2; --teal-400:#7FC6D6;
+    --teal-500:#4C9DAD; --teal-600:#3C8896; --teal-700:#2F6D7B; --teal-800:#21505C; --teal-900:#183A44;
+
+    --slate-50:#F5F7FA; --slate-100:#EDF0F5; --slate-150:#D3DBE9; --slate-200:#BFC8D9;
+    --slate-300:#B8C3D6; --slate-400:#8F9BB7; --slate-500:#6C7B97;
+    --slate-600:#5A6A89; --slate-700:#46546E; --slate-800:#3A475F; --slate-900:#1E2A38;
+
+    --amber-100:#FDF3E5; --amber-300:#F0CD98; --amber-500:#E29B32; --amber-700:#B07020;
+    --success-500:#2D9D78;
+    --cream:#FDF3E5; --white:#FFFFFF;
+
+    --bg-app:var(--slate-100);
+    --bg-frosted:rgba(255,255,255,0.7);
+    --bg-surface:var(--white);
+
+    --fg-strong:var(--slate-800);
+    --fg-default:var(--slate-600);
+    --fg-muted:var(--slate-500);
+    --fg-subtle:var(--slate-400);
+
+    --gradient-brand: linear-gradient(180deg, #2F6873 0%, #59C4D9 100%);
+    --gradient-brand-h: linear-gradient(44.71deg, #2F6873 -18.34%, #59C4D9 120.98%);
+
+    --shadow-xs: 2px 2px 4px 0 rgba(96,132,139,0.10);
+    --shadow-sm: 0 2px 8px 0 rgba(96,132,139,0.10);
+    --shadow-md: 0 6px 16px 0 rgba(96,132,139,0.12);
+    --shadow-3d: 0 8px 24px -4px rgba(96,132,139,0.18), 0 2px 6px 0 rgba(214,218,230,1), inset 0 1px 0 0 rgba(255,255,255,0.6);
+
+    --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-pill:9999px;
+
+    /* Channel / placement colors */
+    --c-meta:var(--teal-500);
+    --c-meta-tint:var(--teal-100);
+    --c-fb:var(--teal-500);
+    --c-ig:var(--slate-900); /* dark blue per brand guidelines */
+    --c-an:var(--slate-300);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{
+    height:100%;overflow:hidden;
+    font-family:"Poppins",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    color:var(--fg-default);
+    -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  }
+  body{
+    background:var(--bg-app);
+    display:grid;grid-template-rows:auto 1fr;
+  }
+
+  /* ─────────────────────────────────────────────── HEADER (brand gradient bar) */
+  header{
+    background:var(--gradient-brand);
+    padding:18px 32px 22px;
+    border-bottom-left-radius:12px;border-bottom-right-radius:12px;
+    display:flex;justify-content:space-between;align-items:center;
+    color:#fff;
+    box-shadow:0 6px 18px -8px rgba(47,104,115,0.35);
+    position:relative;z-index:2;
+  }
+  .brand{display:flex;align-items:center;gap:18px}
+  .aeva-logo{height:28px;width:auto;display:block;filter:brightness(0) invert(1)}
+  .brand-divider{width:1px;height:30px;background:rgba(255,255,255,0.25);flex-shrink:0}
+  .client-logo{height:38px;width:auto;display:block;opacity:.95}
+  .title-block{margin-left:6px}
+  .eyebrow{
+    font-size:11px;letter-spacing:.1px;
+    font-weight:600;color:rgba(255,255,255,0.82);margin-bottom:4px;
+  }
+  h1{
+    font-weight:600;font-size:18px;line-height:1.1;color:#fff;letter-spacing:-.1px;
+  }
+  h1 em{font-style:normal;font-weight:400;color:rgba(255,255,255,0.78)}
+
+  .cta-row{display:flex;gap:10px;align-items:center}
+  .pill{
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.22);
+    padding:9px 16px;border-radius:var(--radius-pill);
+    font-size:12px;font-weight:500;color:#fff;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .pill i{font-size:11px;opacity:.85}
+  .pill b{font-weight:600}
+  .btn{
+    padding:10px 18px;border-radius:var(--radius-sm);
+    background:#fff;color:var(--teal-700);
+    font-family:inherit;font-weight:600;font-size:12px;letter-spacing:.1px;
+    border:0;cursor:pointer;
+    display:inline-flex;align-items:center;gap:8px;
+    transition:filter 160ms ease,transform 160ms ease;
+    box-shadow:0 2px 6px rgba(24,58,68,0.18);
+  }
+  .btn:hover{filter:brightness(1.03)}
+  .btn:active{transform:scale(.98)}
+
+  /* ─────────────────────────────────────────────── GRID */
+  main{
+    display:grid;
+    grid-template-columns:repeat(12,1fr);
+    grid-template-rows:repeat(5,1fr);
+    gap:14px;
+    padding:16px 24px 22px;
+    min-height:0;position:relative;z-index:1;
+  }
+
+  /* Base card — frosted white */
+  .tile{
+    background:var(--bg-frosted);
+    border:1px solid var(--white);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-xs);
+    padding:16px 18px;
+    display:flex;flex-direction:column;
+    transition:transform .25s ease, box-shadow .25s ease;
+    overflow:hidden;position:relative;color:var(--fg-default);
+  }
+  .tile:hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+
+  /* Hero tile — brand-gradient feature card */
+  .tile.hero{
+    background:var(--gradient-brand);
+    border:1px solid rgba(255,255,255,0.35);
+    box-shadow:var(--shadow-3d);
+    color:#fff;
+  }
+
+
+  /* Channel chip in card corners */
+  .ch-chip{
+    position:absolute;top:14px;right:14px;
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:9.5px;font-weight:600;letter-spacing:.1px;
+    padding:4px 8px;border-radius:var(--radius-pill);
+  }
+  .ch-chip.m{background:var(--c-meta-tint);color:var(--teal-700)}
+  .ch-chip i{font-size:9px}
+
+  /* ─── Grid placement */
+  .t-hero        {grid-column:1 / span 4; grid-row:1 / span 2}
+  .t-top-row     {grid-column:5 / span 8; grid-row:1; display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+  .t-trend       {grid-column:5 / span 8; grid-row:2 / span 2}
+  .t-summary     {grid-column:1 / span 4; grid-row:3 / span 3}
+  .t-cpc         {grid-column:5 / span 2; grid-row:4}
+  .t-cpm         {grid-column:7 / span 2; grid-row:4}
+  .t-imp         {grid-column:5 / span 2; grid-row:5}
+  .t-reach       {grid-column:7 / span 2; grid-row:5}
+  .t-share       {grid-column:9 / span 4; grid-row:4 / span 2}
+
+  /* ─── Typography inside cards */
+  .label{
+    font-size:11px;letter-spacing:.1px;
+    font-weight:600;color:var(--fg-muted);
+  }
+  .number{
+    font-weight:600;font-size:38px;letter-spacing:-1px;line-height:1;
+    color:var(--fg-strong);font-feature-settings:"tnum";margin-top:6px;
+  }
+  .number small{font-size:16px;font-weight:500;color:var(--fg-muted)}
+  .caption{margin-top:auto;padding-top:8px;font-size:12px;color:var(--fg-default);font-weight:400;line-height:1.4}
+  .caption b{font-weight:600;color:var(--fg-strong)}
+  .delta{
+    display:inline-flex;align-items:center;gap:4px;
+    font-size:11px;font-weight:600;color:var(--amber-700);
+  }
+
+  /* big-number tiles */
+  .t-meta-leads,.t-lpv,.t-total{display:grid;grid-template-rows:auto 1fr auto;padding-top:18px}
+  .t-meta-leads .number{font-size:56px;letter-spacing:-2px;margin:0;align-self:center;color:var(--teal-600)}
+  .t-lpv .number{font-size:56px;letter-spacing:-2px;margin:0;align-self:center;color:var(--teal-500)}
+  .t-total .number{font-size:38px;letter-spacing:-1px;margin:0;align-self:center}
+  .t-total .number small{font-size:16px}
+
+  /* compact KPI tiles */
+  .compact{display:grid;grid-template-rows:auto 1fr auto}
+  .compact .label{font-size:10.5px;align-self:start}
+  .compact .number{font-size:30px;margin:0;align-self:center}
+  .compact.brand-meta .number{color:var(--teal-600)}
+  .compact .caption{font-size:11px;padding-top:0;align-self:end}
+
+  /* ─── Hero internals */
+  .hero-eyebrow{
+    font-size:11px;letter-spacing:.1px;
+    font-weight:600;color:rgba(255,255,255,0.82);
+  }
+  .hero-title{
+    font-weight:500;font-size:22px;line-height:1.28;color:#fff;
+    margin-top:8px;letter-spacing:-.2px;
+  }
+  .hero-title em{font-style:normal;font-weight:700;color:#fff}
+  .hero-title em.m{color:#CBEDF4}
+  .hero-title em.w{color:#FDE3B6}
+  .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto}
+  .h-stat{
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.22);
+    border-radius:var(--radius-md);
+    padding:10px 12px;
+  }
+  .h-stat .l{font-size:9px;letter-spacing:.1px;color:rgba(255,255,255,0.78);font-weight:500}
+  .h-stat .v{font-weight:600;font-size:20px;margin-top:3px;color:#fff;letter-spacing:-.4px;font-feature-settings:"tnum"}
+  .h-stat .s{font-size:10.5px;color:rgba(255,255,255,0.78);font-weight:400;margin-top:2px}
+
+  /* ─── Trend tile */
+  .trend-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+  .trend-head .h-title{font-weight:600;font-size:14px;color:var(--fg-strong);margin-top:3px;letter-spacing:-.1px}
+  .legend-inline{display:flex;gap:14px;font-size:11px;font-weight:500;color:var(--fg-default)}
+  .legend-inline span{display:flex;align-items:center;gap:6px}
+  .legend-inline .dot{width:10px;height:10px;border-radius:2px}
+  .legend-inline .dot.m{background:var(--c-meta)}
+  .legend-inline .dot.lead{background:var(--teal-700)}
+  .legend-inline .dot.form{background:var(--slate-900)}
+
+  .trend-stack{flex:1;display:grid;grid-template-rows:1fr;gap:6px;min-height:0}
+  .chart-block{position:relative;min-height:0;display:flex;flex-direction:column}
+  .micro-label{
+    font-size:9px;letter-spacing:.1px;
+    color:var(--fg-subtle);font-weight:600;margin:2px 0;
+  }
+  .chart-wrap{flex:1;position:relative;min-height:0}
+
+  /* ─── Share donut */
+  .pie-wrap{position:relative;flex:1;min-height:0;margin-top:4px}
+  .pie-center{position:absolute;inset:0;display:grid;place-items:center;text-align:center;pointer-events:none}
+  .pie-center .l{font-size:9px;letter-spacing:.1px;color:var(--fg-subtle);font-weight:600}
+  .pie-center .v{font-weight:700;font-size:22px;color:var(--fg-strong);margin-top:2px;letter-spacing:-.4px}
+  .legend-block{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+  .legend-block .row{display:flex;justify-content:space-between;align-items:center;font-size:12px}
+  .legend-block .row .left{display:flex;align-items:center;gap:8px;color:var(--fg-strong);font-weight:500}
+  .legend-block .row .left .dot{width:10px;height:10px;border-radius:2px}
+  .legend-block .row .v{font-weight:600;color:var(--fg-strong);font-feature-settings:"tnum"}
+  .legend-block .row .pct{color:var(--fg-muted);font-weight:500;margin-left:6px;font-size:11px}
+
+  /* ─── Summary tile — brand-gradient feature card (matches hero) */
+  .t-summary{
+    padding:18px 20px;
+    background:var(--gradient-brand);
+    border:1px solid rgba(255,255,255,0.35);
+    box-shadow:var(--shadow-3d);
+    color:#fff;
+  }
+  .t-summary .label{
+    margin-bottom:8px;color:rgba(255,255,255,0.82);
+  }
+  .summary-title{
+    font-weight:500;font-size:20px;color:#fff;
+    line-height:1.3;margin-bottom:12px;letter-spacing:-.2px;
+  }
+  .summary-title em{font-style:normal;font-weight:700;color:#CBEDF4}
+  .summary-body{font-size:13.5px;line-height:1.65;color:rgba(255,255,255,0.88);font-weight:400;flex:1;min-height:0}
+  .summary-body p + p{margin-top:10px}
+  .summary-body b{font-weight:600;color:#fff}
+  .tag-m{
+    display:inline-flex;align-items:center;gap:4px;
+    background:rgba(203,237,244,0.18);color:#CBEDF4;
+    padding:1px 7px;border-radius:var(--radius-pill);
+    font-weight:600;font-size:11.5px;
+  }
+  .tag-w{
+    display:inline-flex;align-items:center;gap:4px;
+    background:rgba(30,42,56,0.40);color:#D8E4F2;
+    padding:1px 7px;border-radius:var(--radius-pill);
+    font-weight:600;font-size:11.5px;
+  }
+  .tag-m i,.tag-w i{font-size:9px}
+
+  /* ─────────────────────────────────────────────── RESPONSIVE */
+  @media (max-width:1280px){
+    main{padding:14px 16px 18px;gap:12px}
+    header{padding:16px 20px}
+    .number{font-size:32px}
+    .t-meta-leads .number,.t-lpv .number{font-size:46px}
+    .t-total .number{font-size:30px}
+    .summary-title{font-size:18px}
+    .summary-body{font-size:12.5px;line-height:1.55}
+    .hero-title{font-size:19px}
+    .h-stat .v{font-size:18px}
+  }
+
+  /* ── Tablet / small laptop: release the fixed viewport, let it scroll */
+  @media (max-width:1024px){
+    html,body{height:auto;overflow:auto}
+    body{display:block}
+
+    header{
+      padding:14px 18px;
+      flex-wrap:wrap;gap:14px;
+      border-radius:0 0 12px 12px;
+    }
+    .brand{flex-wrap:wrap;gap:14px}
+    .cta-row{flex-wrap:wrap}
+
+    main{
+      grid-template-columns:repeat(6,1fr);
+      grid-template-rows:none;
+      grid-auto-rows:minmax(160px,auto);
+      padding:14px 16px 20px;
+    }
+    .t-hero       {grid-column:1 / span 6;grid-row:auto;min-height:280px}
+    .t-top-row    {grid-column:1 / span 6;grid-row:auto;grid-template-columns:repeat(3,1fr)}
+    .t-trend      {grid-column:1 / span 6;grid-row:auto;min-height:420px}
+    .t-summary    {grid-column:1 / span 6;grid-row:auto;min-height:320px}
+    .t-cpc        {grid-column:1 / span 3;grid-row:auto}
+    .t-cpm        {grid-column:4 / span 3;grid-row:auto}
+    .t-imp        {grid-column:1 / span 3;grid-row:auto}
+    .t-reach      {grid-column:4 / span 3;grid-row:auto}
+    .t-share      {grid-column:1 / span 6;grid-row:auto;min-height:340px}
+
+    .hero-stats{grid-template-columns:repeat(4,1fr)}
+  }
+
+  /* ── Mobile: single-column stack, smaller chrome */
+  @media (max-width:640px){
+    header{
+      padding:14px 16px;
+      flex-direction:column;align-items:flex-start;
+      border-radius:0 0 10px 10px;
+    }
+    .brand{gap:10px;width:100%}
+    .aeva-logo{height:24px}
+    .client-logo{height:30px}
+    .brand-divider{height:24px}
+    .title-block{margin-left:0;flex-basis:100%}
+    h1{font-size:15px;line-height:1.2}
+    .eyebrow{font-size:9px;letter-spacing:1.4px}
+    .cta-row{width:100%;justify-content:space-between;gap:8px}
+    .pill{padding:7px 12px;font-size:11px}
+    .btn{padding:9px 14px;font-size:11px}
+
+    main{
+      grid-template-columns:1fr;
+      gap:12px;
+      padding:12px 12px 18px;
+      grid-auto-rows:auto;
+    }
+    .tile{padding:14px 14px;border-radius:14px}
+
+    .t-hero,.t-top-row,.t-trend,.t-summary,
+    .t-cpc,.t-cpm,.t-imp,.t-reach,.t-share{
+      grid-column:1 / -1;min-height:0;
+    }
+    .t-hero{min-height:auto}
+    .t-trend{min-height:380px}
+    .t-share{min-height:300px}
+
+    .t-top-row{
+      grid-template-columns:1fr;gap:12px;
+    }
+
+    .hero-title{font-size:17px;line-height:1.32}
+    .hero-stats{grid-template-columns:1fr 1fr;gap:8px}
+    .h-stat{padding:9px 10px}
+    .h-stat .v{font-size:17px}
+    .h-stat .s{font-size:10px}
+
+    .t-meta-leads,.t-lpv{padding-top:16px}
+    .t-meta-leads .number,.t-lpv .number{font-size:42px;letter-spacing:-1.5px}
+    .t-total .number{font-size:28px}
+    .t-total .number small{font-size:14px}
+
+    .ch-chip{top:12px;right:12px;font-size:9px;padding:3px 7px}
+
+    .compact{padding-top:14px;padding-bottom:14px}
+    .compact .number{font-size:26px}
+
+    .t-summary{padding:16px 16px}
+    .summary-title{font-size:17px;margin-bottom:10px}
+    .summary-body{font-size:13px;line-height:1.6}
+
+    .trend-head{flex-direction:column;gap:8px;margin-bottom:8px}
+    .legend-inline{font-size:10.5px;gap:12px}
+    .trend-stack{grid-template-rows:1fr;gap:8px}
+
+    .legend-block .row{font-size:11.5px}
+    .pie-center .v{font-size:20px}
+  }
+
+  /* Very narrow phones */
+  @media (max-width:380px){
+    h1{font-size:14px}
+    .pill{font-size:10.5px;padding:6px 10px}
+    .btn{font-size:10.5px;padding:8px 12px}
+    .hero-title{font-size:16px}
+    .summary-title{font-size:16px}
+    .t-meta-leads .number,.t-lpv .number{font-size:38px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <img class="aeva-logo" src="images/Aeva-logo.svg" alt="AEVA">
+    <span class="brand-divider" aria-hidden="true"></span>
+    <img class="client-logo" src="images/nory-logo.svg" alt="Nory Dentistry">
+    <div class="title-block">
+      <div class="eyebrow">Performance hub</div>
+      <h1>Emface campaign to date · <em>Meta Ads overview</em></h1>
+    </div>
+  </div>
+  <div class="cta-row">
+    <div class="pill"><i class="far fa-calendar"></i>Aug 25 → Oct 4 · <b>2026</b></div>
+    <button class="btn"><i class="fas fa-arrow-down-to-bracket"></i>Export Report</button>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <div class="tile hero t-hero">
+    <div class="hero-eyebrow">Headline · full Emface campaign · since Aug 25</div>
+    <div class="hero-title"><em class="m">Meta</em> drove <em>45 form leads</em> at <em>$45.52</em> from <em>$2,048</em> spend.</div>
+    <div class="hero-stats">
+      <div class="h-stat"><div class="l">Total spend</div><div class="v">$2,048</div><div class="s">Emface campaign</div></div>
+      <div class="h-stat"><div class="l">Instant form leads</div><div class="v">45</div><div class="s">$45.52 per lead</div></div>
+      <div class="h-stat"><div class="l">Link clicks</div><div class="v">622</div><div class="s">$3.29 per click · 2.41% CTR</div></div>
+      <div class="h-stat"><div class="l">Reach</div><div class="v">8,054</div><div class="s">Frequency 3.20</div></div>
+    </div>
+  </div>
+
+  <!-- Top row -->
+  <div class="t-top-row">
+    <div class="tile t-meta-leads">
+      <div class="ch-chip m"><i class="fab fa-meta"></i>Meta</div>
+      <div class="label">Cost / lead</div>
+      <div class="number">$45.52</div>
+      <div class="caption">Total spend ÷ <b>45</b> instant form leads</div>
+    </div>
+    <div class="tile t-lpv">
+      <div class="ch-chip m"><i class="fab fa-meta"></i>Meta</div>
+      <div class="label">Instant form leads</div>
+      <div class="number">45</div>
+      <div class="caption"><b>17</b> in the last 7 days</div>
+    </div>
+    <div class="tile t-total">
+      <div class="label">Total spend</div>
+      <div class="number">$2,048<small>.45</small></div>
+      <div class="caption">Campaign to date · since <b>Aug 25, 2026</b></div>
+    </div>
+  </div>
+
+  <!-- TREND -->
+  <div class="tile t-trend">
+    <div class="trend-head">
+      <div>
+        <div class="label">Daily trend</div>
+        <div class="h-title">Daily spend · Aug 25 → Oct 4</div>
+      </div>
+      </div>
+    <div class="trend-stack">
+      <div class="chart-block">
+        <div class="micro-label">Daily spend · USD</div>
+        <div class="chart-wrap"><canvas id="spendChart"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="tile t-summary">
+    <div class="label">Executive summary</div>
+    <div class="summary-title">Instant forms are building momentum, with <em>the latest week the strongest yet</em>.</div>
+    <div class="summary-body">
+      <p>Since launching on <b>Aug 25</b>, the <b>Emface campaign</b> has invested <b>$2,048</b>, reaching <b>8,054 people</b> with <b>25.8K impressions</b>. Instant forms went live on <b>Sep 7</b> and have generated <b>45 leads</b>. Measured against total spend, that is <b>$45.52 per lead</b>.</p>
+      <p><span class="tag-m"><i class="fab fa-facebook"></i>Facebook</span> carried <b>75.8%</b> of spend and delivered <b>39 of 45 leads</b>. <span class="tag-w"><i class="fab fa-instagram"></i>Instagram</span> took <b>24.2%</b> and added <b>6</b>. The last 7 days produced <b>17 leads</b> at about <b>$20.60</b> each on steady spend. Frequency is now <b>3.20</b>, so fresh creative in the coming weeks will help keep that pace.</p>
+    </div>
+  </div>
+
+  <!-- COMPACT KPIs (all Meta) -->
+  <div class="tile compact t-cpc">
+    <div class="label">Meta · Link CTR</div>
+    <div class="number">2.41%</div>
+    <div class="caption">Link clicks ÷ impressions</div>
+  </div>
+  <div class="tile compact t-imp">
+    <div class="label">Meta · Impressions</div>
+    <div class="number">25.8<small>K</small></div>
+    <div class="caption">Since <b>Aug 25</b></div>
+  </div>
+  <div class="tile compact t-cpm">
+    <div class="label">Meta · CPM</div>
+    <div class="number">$79.44</div>
+    <div class="caption">Cost per 1K impressions</div>
+  </div>
+  <div class="tile compact t-reach">
+    <div class="label">Meta · Reach</div>
+    <div class="number">8.1<small>K</small></div>
+    <div class="caption">Frequency · <b>3.20</b></div>
+  </div>
+
+  <!-- SHARE -->
+  <div class="tile t-share">
+    <div class="label">Spend by placement</div>
+    <div class="pie-wrap">
+      <canvas id="pie"></canvas>
+      <div class="pie-center"><div><div class="l">Total</div><div class="v">$2,048</div></div></div>
+    </div>
+    <div class="legend-block">
+      <div class="row">
+        <div class="left"><span class="dot" style="background:var(--c-fb)"></span>Facebook</div>
+        <div><span class="v">$1,551.98</span><span class="pct">75.8%</span></div>
+      </div>
+      <div class="row">
+        <div class="left"><span class="dot" style="background:var(--c-ig)"></span>Instagram</div>
+        <div><span class="v">$496.47</span><span class="pct">24.2%</span></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+const dates=["08-25","08-26","08-27","08-28","08-29","08-30","08-31","09-01","09-02","09-03","09-04","09-05","09-06","09-07","09-08","09-09","09-10","09-11","09-12","09-13","09-14","09-15","09-16","09-17","09-18","09-19","09-20","09-21","09-22","09-23","09-24","09-25","09-26","09-27","09-28","09-29","09-30","10-01","10-02","10-03","10-04"];
+const mCost=[58.83,53.16,52.27,38.63,35.42,65.61,41.05,27.35,60.49,52.36,43.46,59.06,60.05,68.3,52.54,49.91,45.56,38.2,38.64,69.86,50.62,52.39,52.59,45.22,40.34,38.56,61.08,38.98,63.63,56.35,47.01,44.7,37.93,58.09,48.5,52.93,54.05,41.67,57.49,36.7,58.87];
+
+const C_M='#4C9DAD';     // teal-500
+const C_LEAD='#2F6D7B';  // teal-700
+const C_IG='#1E2A38';    // slate-900 dark blue (brand)
+const TXT='#8F9BB7';     // slate-400 (axis text)
+const GRID='rgba(143,155,183,0.18)';
+
+Chart.defaults.font.family='Poppins';
+Chart.defaults.color=TXT;
+Chart.defaults.font.weight='500';
+
+new Chart(document.getElementById('spendChart'),{
+  type:'line',
+  data:{labels:dates,datasets:[
+    {label:'Spend',data:mCost,borderColor:C_M,backgroundColor:'rgba(76,157,173,0.16)',fill:true,tension:.4,borderWidth:2,pointRadius:0,pointHoverRadius:5}
+  ]},
+  options:{
+    maintainAspectRatio:false,responsive:true,
+    interaction:{intersect:false,mode:'index'},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' Spend $'+c.parsed.y.toFixed(2)}}},
+    scales:{
+      x:{grid:{display:false},border:{display:false},ticks:{color:TXT,font:{size:9,weight:'500'},maxRotation:0,autoSkipPadding:14}},
+      y:{grid:{color:GRID},border:{display:false},ticks:{color:TXT,font:{size:9},callback:v=>'$'+v}}
+    }
+  }
+});
+
+
+new Chart(document.getElementById('pie'),{
+  type:'doughnut',
+  data:{labels:['Facebook','Instagram'],datasets:[{
+    data:[1551.98,496.47],
+    backgroundColor:[C_M,C_IG],
+    borderColor:'#fff',borderWidth:3,hoverOffset:6
+  }]},
+  options:{maintainAspectRatio:false,responsive:true,cutout:'72%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.label+' $'+c.parsed.toLocaleString(undefined,{minimumFractionDigits:2})}}}}
+});
+</script>
+</body>
+</html>
